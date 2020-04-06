@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterpoke/models.dart';
+import 'package:flutterpoke/utils/routes.dart';
 
-import 'package:flutterpoke/requester.dart';
-import 'package:flutterpoke/screens/detail.dart';
+import 'package:flutterpoke/utils/requesters.dart';
+import 'package:flutterpoke/pages/detail.dart';
 import 'package:flutterpoke/values.dart';
+import 'package:flutterpoke/views/progressBar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,16 +30,14 @@ class _HomePageState extends State<HomePage> {
       isLoading = true;
     });
 
-    fetchPokemon(searchText.trim().toLowerCase()).then((response) {
-      var responseJson = json.decode(response.body);
+    fetchPokemon(searchText.trim().toLowerCase()).then((pokemon) {
       setState(() {
         isLoading = false;
       });
-      Pokemon pokemon = Pokemon.fromJson(responseJson);
       Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => DetailPage(poke: pokemon)));
+          EnterExitRoute(
+              exitPage: widget, enterPage: DetailPage(poke: pokemon)));
     }).catchError((error) {
       debugPrint(error.toString());
       Fluttertoast.showToast(msg: "Pokemon not found. Try again.");
@@ -88,32 +88,14 @@ class _HomePageState extends State<HomePage> {
                   color: Color(0xff333333),
                   shape: AppStyles.buttonShape,
                   child: isLoading
-                      ? SizedBox(
-                          height: AppDimens.loadSize,
-                          width: AppDimens.loadSize,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 1.0,
-                            backgroundColor: AppColors.white,
-                          ),
-                        )
+                      ? ProgressBar()
                       : Text(
                           "Go",
                           style: AppStyles.buttonTextStyle,
                         )),
-
-              // Text(
-              //   '$_counter',
-              //   style: Theme.of(context).textTheme.display1,
-              // ),
-              // SizedBox(width: double.infinity, child: TypeCard("electric"))
             ],
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: _incrementCounter,
-        //   tooltip: 'Increment',
-        //   child: Icon(Icons.add),
-        // ), // This trailing comma makes auto-formatting nicer for build methods.
       ],
     );
   }

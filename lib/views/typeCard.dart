@@ -91,14 +91,10 @@ class TypeCard extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Color(cardColor),
                 borderRadius: BorderRadius.circular(1000.0)),
-            height: AppDimens.tinyPadding,
-            margin: EdgeInsets.all(AppDimens.tinyPadding),
+            height: 7,
+            margin: EdgeInsets.all(AppDimens.smallPadding),
           ),
-          Text(type.toUpperCase(),
-              style: TextStyle(
-                  color: AppColors.dark,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold))
+          Text(type.toUpperCase(), style: AppStyles.boldDarkTextStyle)
         ]));
     // Card(
     //     margin: const EdgeInsets.all(AppDimens.tinyPadding),
