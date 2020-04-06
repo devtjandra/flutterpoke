@@ -28,6 +28,8 @@ class AppDimens {
 
 class AppDurations {
   static const arcDuration = Duration(milliseconds: 400);
+  static const fadeDuration = Duration(milliseconds: 200);
+  static const quickDuration = Duration(milliseconds: 100);
 }
 
 class AppStyles {
@@ -39,6 +41,8 @@ class AppStyles {
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(1000.0));
 
   static const textStyle = TextStyle(fontSize: 14.0, color: AppColors.black);
+  static const primaryTextStyle =
+      TextStyle(fontSize: 14.0, color: AppColors.primary);
   static const buttonTextStyle = TextStyle(color: AppColors.white);
   static const whiteTitleStyle = TextStyle(
       fontSize: 16.0, color: AppColors.white, fontWeight: FontWeight.bold);

@@ -4,6 +4,7 @@ import 'package:flutterpoke/utils/extensions.dart';
 import 'package:flutterpoke/utils/requesters.dart';
 import 'package:flutterpoke/values.dart';
 import 'package:flutterpoke/views/progressBar.dart';
+import 'package:flutterpoke/views/simpleButton.dart';
 
 class AbilityView extends StatefulWidget {
   final AbilityPlaceholder ability;
@@ -69,23 +70,19 @@ class _AbilityViewState extends State<AbilityView>
               duration: AppDurations.arcDuration,
               child: ProgressBar()),
           if (status == FetchStatus.failed)
-            RaisedButton(
-                onPressed: _fetch,
-                color: Color(0xff333333),
-                shape: AppStyles.buttonShape,
-                child: Text(
-                  "Retry",
-                  style: AppStyles.buttonTextStyle,
-                )),
+            SimpleButton(
+              text: "Retry",
+              onPressed: _fetch,
+            ),
           AnimatedSize(
             vsync: this,
-            duration: AppDurations.arcDuration,
+            duration: AppDurations.fadeDuration,
             curve: Curves.fastOutSlowIn,
             child: Column(
               children: <Widget>[
                 AnimatedOpacity(
                     opacity: detail != null ? 1 : 0,
-                    duration: AppDurations.arcDuration,
+                    duration: AppDurations.fadeDuration,
                     child: detail != null && detail.effectEntries.length > 0
                         ? Text(detail.effectEntries[0].shortEffect,
                             style:

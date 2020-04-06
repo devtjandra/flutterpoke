@@ -17,10 +17,11 @@ class StatView extends StatelessWidget {
           children: <Widget>[
             Text(formatUnderscore(info).toUpperCase(),
                 style: AppStyles.boldDarkTextStyle),
-            Text(
-              formatUnderscore(value),
-              style: AppStyles.textStyle,
-            )
+            if (value != null)
+              Text(
+                formatUnderscore(value),
+                style: AppStyles.textStyle,
+              )
           ],
         ));
   }

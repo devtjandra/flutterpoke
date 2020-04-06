@@ -8,6 +8,7 @@ class Pokemon {
   final List<StatPlaceholder> stats;
   final int baseExperience;
   final List<AbilityPlaceholder> abilities;
+  final Ability species;
 
   Pokemon(
       {this.id,
@@ -18,9 +19,11 @@ class Pokemon {
       this.types,
       this.stats,
       this.baseExperience,
-      this.abilities});
+      this.abilities,
+      this.species});
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     List<TypePlaceholder> types = List();
     json["types"]
         .forEach((type) => {types.add(TypePlaceholder.fromJson(type))});
@@ -42,7 +45,8 @@ class Pokemon {
         types: types,
         stats: stats,
         baseExperience: json["base_experience"],
-        abilities: abilities);
+        abilities: abilities,
+        species: Ability.fromJson(json["species"]));
   }
 }
 
@@ -53,6 +57,7 @@ class Sprites {
   Sprites({this.main, this.female});
 
   factory Sprites.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return Sprites(main: json["front_default"], female: json["front_female"]);
   }
 }
@@ -63,6 +68,7 @@ class TypePlaceholder {
   TypePlaceholder({this.type});
 
   factory TypePlaceholder.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return TypePlaceholder(type: Type.fromJson(json["type"]));
   }
 }
@@ -73,6 +79,7 @@ class Type {
   Type({this.name});
 
   factory Type.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return Type(name: json["name"]);
   }
 }
@@ -85,6 +92,7 @@ class StatPlaceholder {
   StatPlaceholder({this.baseStat, this.effort, this.stat});
 
   factory StatPlaceholder.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return StatPlaceholder(
         baseStat: json["base_stat"],
         effort: json["effort"],
@@ -99,9 +107,21 @@ class AbilityPlaceholder {
   AbilityPlaceholder({this.ability, this.isHidden});
 
   factory AbilityPlaceholder.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return AbilityPlaceholder(
         ability: Ability.fromJson(json["ability"]),
         isHidden: json["is_hidden"]);
+  }
+}
+
+class Link {
+  final String url;
+
+  Link({this.url});
+
+  factory Link.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+    return Link(url: json["url"]);
   }
 }
 
@@ -112,6 +132,7 @@ class Ability {
   Ability({this.name, this.url});
 
   factory Ability.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return Ability(name: json["name"], url: json["url"]);
   }
 }
@@ -123,6 +144,7 @@ class AbilityDetail {
   AbilityDetail({this.effectEntries, this.generation});
 
   factory AbilityDetail.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     List<EffectEntry> effectEntries = List();
     json["effect_entries"]
         .forEach((entry) => {effectEntries.add(EffectEntry.fromJson(entry))});
@@ -139,6 +161,7 @@ class EffectEntry {
   EffectEntry({this.shortEffect});
 
   factory EffectEntry.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return EffectEntry(shortEffect: json["short_effect"]);
   }
 }
@@ -147,6 +170,8 @@ class Species {
   final int captureRate; // out of 255
   final int genderRate; // chance of being female, out of 8, -1 if genderless
   final Type color;
+  final Ability evolvesFrom;
+  final Link evolutionChain;
   final List<EggGroup> eggGroups;
   final Type habitat;
   final Type generation;
@@ -155,11 +180,14 @@ class Species {
       {this.captureRate,
       this.genderRate,
       this.color,
+      this.evolvesFrom,
+      this.evolutionChain,
       this.eggGroups,
       this.habitat,
       this.generation});
 
   factory Species.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     List<EggGroup> eggGroups = List();
     json["egg_groups"]
         .forEach((eggGroup) => eggGroups.add(EggGroup.fromJson(eggGroup)));
@@ -168,6 +196,8 @@ class Species {
         captureRate: json["capture_rate"],
         genderRate: json["gender_rate"],
         color: Type.fromJson(json["color"]),
+        evolvesFrom: Ability.fromJson(json["evolves_from_species"]),
+        evolutionChain: Link.fromJson(json["evolution_chain"]),
         eggGroups: eggGroups,
         habitat: Type.fromJson(json["habitat"]),
         generation: Type.fromJson(json["generation"]));
@@ -180,6 +210,7 @@ class EggGroup {
   EggGroup({this.name});
 
   factory EggGroup.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return EggGroup(name: json["name"]);
   }
 }

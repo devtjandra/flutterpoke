@@ -7,7 +7,7 @@ enum FetchStatus { success, failed, loading }
 
 Future<Pokemon> fetchPokemon(String name) {
   return http
-      .get('https://pokeapi.co/api/v2/pokemon/' + name)
+      .get("https://pokeapi.co/api/v2/pokemon/" + name)
       .then((response) => Pokemon.fromJson(json.decode(response.body)));
 }
 

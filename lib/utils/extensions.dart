@@ -17,3 +17,14 @@ String formatStat(StatPlaceholder stat) {
   return stat.baseStat.toString() +
       (stat.effort > 0 ? " + " + stat.effort.toString() : "");
 }
+
+String formatCaptureRate(int rate) {
+  return ((rate * 100) ~/ 255).toString() + "%";
+}
+
+String formatGenderRate(int rate) {
+  if (rate == -1)
+    return "Genderless";
+  else
+    return ((rate * 100) ~/ 8).toString() + "% Female";
+}
