@@ -1,16 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutterpoke/models.dart';
-import 'package:flutterpoke/utils/routes.dart';
-
-import 'package:flutterpoke/utils/requesters.dart';
-import 'package:flutterpoke/pages/detail.dart';
 import 'package:flutterpoke/values.dart';
 import 'package:flutterpoke/views/linkedText.dart';
-import 'package:flutterpoke/views/progressBar.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
 
 class ExtraPage extends StatefulWidget {
@@ -71,6 +61,14 @@ class _ExtraPageState extends State<ExtraPage> {
                 LinkedText(
                     text: "Sliding Up Panel",
                     url: "https://github.com/akshathjain/sliding_up_panel"),
+                LinkedText(
+                  text: "SQFLite",
+                  url: "https://github.com/tekartik/sqflite",
+                ),
+                LinkedText(
+                  text: "Flutter Slidable",
+                  url: "https://github.com/letsar/flutter_slidable",
+                )
               ],
             ),
           ),

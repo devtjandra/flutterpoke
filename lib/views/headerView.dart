@@ -6,7 +6,7 @@ class HeaderView extends StatelessWidget {
   final String title;
   final String rightTitle;
 
-  HeaderView({this.title, this.rightTitle});
+  HeaderView({this.title, this.rightTitle = ""});
 
   @override
   Widget build(BuildContext context) {

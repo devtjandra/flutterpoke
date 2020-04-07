@@ -291,3 +291,16 @@ class EvolutionDetail {
         location: Type.fromJson(json["location"]));
   }
 }
+
+class FavePoke {
+  final int id;
+  final String name;
+  final String sprite;
+
+  FavePoke({this.id, this.name, this.sprite});
+
+  factory FavePoke.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+    return FavePoke(id: json["id"], name: json["name"], sprite: json["sprite"]);
+  }
+}

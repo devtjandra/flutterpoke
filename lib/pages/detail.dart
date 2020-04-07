@@ -18,6 +18,7 @@ import 'package:flutterpoke/views/statView.dart';
 import 'package:flutterpoke/views/typeCard.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:flutterpoke/utils/db.dart';
 
 typedef PokeCallback = Function(String num);
 
@@ -38,6 +39,7 @@ class _DetailPageState extends State<DetailPage>
   EvolutionChain evolutionChain;
   FetchStatus evolutionChainStatus;
   FetchStatus pokeStatus;
+  bool isFave = false;
 
   void changeHeader(double newShrink) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -47,6 +49,13 @@ class _DetailPageState extends State<DetailPage>
         setState(() {
           isClosed = newClosed;
         });
+    });
+  }
+
+  _fetchFave() async {
+    bool isSaved = await isFaveSaved(widget.poke.id);
+    setState(() {
+      isFave = isSaved;
     });
   }
 
@@ -115,7 +124,22 @@ class _DetailPageState extends State<DetailPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchSpecies();
+      _fetchFave();
     });
+  }
+
+  _faveClick() async {
+    if (isFave) {
+      Fluttertoast.showToast(msg: "Pokemon removed from favorites.");
+      await removeFave(widget.poke.id);
+    } else {
+      Fluttertoast.showToast(msg: "Pokemon added to favorites.");
+      await addFave(FavePoke(
+          id: widget.poke.id,
+          name: widget.poke.name,
+          sprite: widget.poke.sprite.main));
+    }
+    _fetchFave();
   }
 
   @override
@@ -187,9 +211,7 @@ class _DetailPageState extends State<DetailPage>
                                         pokeClick: (poke) =>
                                             _fetchPokemon(poke))
                                     : Text(
-                                        "No evolution chain found for " +
-                                            formatUnderscore(widget.poke.name) +
-                                            " :(",
+                                        "No evolution chain found for ${formatUnderscore(widget.poke.name)} :(",
                                         style: AppStyles.textStyle)
                             ],
                           ),
@@ -302,10 +324,11 @@ class _DetailPageState extends State<DetailPage>
                                                   info: "Gender",
                                                   value: formatGenderRate(
                                                       species.genderRate)),
-                                              StatView(
-                                                  info: "Habitat",
-                                                  value: formatUnderscore(
-                                                      species.habitat.name)),
+                                              if (species.habitat != null)
+                                                StatView(
+                                                    info: "Habitat",
+                                                    value: formatUnderscore(
+                                                        species.habitat.name)),
                                               StatView(
                                                   info: "Generation",
                                                   value: formatUnderscore(
@@ -358,6 +381,18 @@ class _DetailPageState extends State<DetailPage>
                       ],
                     ))
               ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(AppDimens.screenPadding),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                onPressed: _faveClick,
+                foregroundColor: AppColors.primary,
+                backgroundColor: AppColors.white,
+                child: Icon(isFave ? Icons.favorite : Icons.favorite_border),
+              ),
             ),
           ),
           if (pokeStatus == FetchStatus.loading)
