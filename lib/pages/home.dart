@@ -34,10 +34,8 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isLoading = false;
       });
-      Navigator.push(
-          context,
-          EnterExitRoute(
-              exitPage: widget, enterPage: DetailPage(poke: pokemon)));
+      Navigator.push(context,
+          FadeRoute(exitPage: widget, enterPage: DetailPage(poke: pokemon)));
     }).catchError((error) {
       debugPrint(error.toString());
       Fluttertoast.showToast(msg: "Pokemon not found. Try again.");

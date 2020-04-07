@@ -22,3 +22,9 @@ Future<Species> fetchSpecies(String url) {
       .get(url)
       .then((response) => Species.fromJson(json.decode(response.body)));
 }
+
+Future<EvolutionChain> fetchChain(String url) {
+  return http
+      .get(url)
+      .then((response) => EvolutionChain.fromJson(json.decode(response.body)));
+}

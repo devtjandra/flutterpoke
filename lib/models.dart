@@ -214,3 +214,52 @@ class EggGroup {
     return EggGroup(name: json["name"]);
   }
 }
+
+class EvolutionChain {
+  final Chain chain;
+
+  EvolutionChain({this.chain});
+
+  factory EvolutionChain.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+    return EvolutionChain(chain: Chain.fromJson(json["chain"]));
+  }
+}
+
+class Chain {
+  final Type species;
+  final bool isBaby;
+
+  Chain({this.species, this.isBaby});
+
+  factory Chain.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+    return Chain(
+        species: Type.fromJson(json["species"]), isBaby: json["is_baby"]);
+  }
+}
+
+class EvolutionDetail {
+  final Type trigger;
+  final Type item;
+  final int minLevel;
+  final int minHappiness;
+  final int minBeauty;
+  final int minAffection;
+  final Type heldItem;
+  final int gender;
+  final String timeOfDay;
+  final Type location;
+
+  EvolutionDetail(
+      {this.trigger,
+      this.item,
+      this.minLevel,
+      this.minHappiness,
+      this.minBeauty,
+      this.minAffection,
+      this.heldItem,
+      this.gender,
+      this.timeOfDay,
+      this.location});
+}
