@@ -229,13 +229,26 @@ class EvolutionChain {
 class Chain {
   final Type species;
   final bool isBaby;
+  final EvolutionDetail details;
+  final List<Chain> evolvesTo;
 
-  Chain({this.species, this.isBaby});
+  Chain({this.species, this.isBaby, this.details, this.evolvesTo});
 
   factory Chain.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
+
+    List<EvolutionDetail> details = List();
+    json["evolution_details"]
+        .forEach((detail) => details.add(EvolutionDetail.fromJson(detail)));
+    EvolutionDetail detail = details.length > 0 ? details[0] : null;
+    List<Chain> evolvesTo = List();
+    json["evolves_to"].forEach((chain) => evolvesTo.add(Chain.fromJson(chain)));
+
     return Chain(
-        species: Type.fromJson(json["species"]), isBaby: json["is_baby"]);
+        species: Type.fromJson(json["species"]),
+        isBaby: json["is_baby"],
+        details: detail,
+        evolvesTo: evolvesTo);
   }
 }
 
@@ -262,4 +275,19 @@ class EvolutionDetail {
       this.gender,
       this.timeOfDay,
       this.location});
+
+  factory EvolutionDetail.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+    return EvolutionDetail(
+        trigger: Type.fromJson(json["trigger"]),
+        item: Type.fromJson(json["item"]),
+        minLevel: json["min_level"],
+        minHappiness: json["min_happiness"],
+        minBeauty: json["min_beauty"],
+        minAffection: json["min_affection"],
+        heldItem: Type.fromJson(json["held_item"]),
+        gender: json["gender"],
+        timeOfDay: json["time_of_day"],
+        location: Type.fromJson(json["location"]));
+  }
 }

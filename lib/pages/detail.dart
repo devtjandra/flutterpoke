@@ -7,7 +7,7 @@ import 'package:flutterpoke/values.dart';
 import 'package:flutterpoke/views/abilityView.dart';
 import 'package:flutterpoke/views/arcHeader.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutterpoke/views/evolutionView.dart';
+import 'package:flutterpoke/views/chainView.dart';
 import 'package:flutterpoke/views/headerView.dart';
 import 'package:flutterpoke/views/listCard.dart';
 import 'package:flutterpoke/views/numberCard.dart';
@@ -125,15 +125,75 @@ class _DetailPageState extends State<DetailPage>
         body: Stack(children: <Widget>[
           SlidingUpPanel(
             controller: this,
+            maxHeight: MediaQuery.of(context).size.height - 120,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20)),
             panel: Container(
-                child: Column(
-              children: <Widget>[
-                if (evolutionChain != null)
-                  Text(evolutionChain.chain.species.name)
-              ],
-            )),
+                child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppDimens.screenPadding),
+                    child: SingleChildScrollView(
+                        padding: EdgeInsets.only(
+                            top: AppDimens.screenPadding,
+                            bottom: AppDimens.bigPadding),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: AppDimens.mediumPadding),
+                                child: Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: AppDimens.normalPadding),
+                                      child: InkWell(
+                                          onTap: () => close(),
+                                          child: Icon(Icons.close,
+                                              size: 20, color: AppColors.dark)),
+                                    ),
+                                    Text(
+                                        formatUnderscore(widget.poke.name) +
+                                            (widget.poke.name[widget
+                                                            .poke.name.length -
+                                                        1] ==
+                                                    "s"
+                                                ? "'"
+                                                : "'s") +
+                                            " Evolution Chain",
+                                        style: AppStyles.titleTextStyle)
+                                  ],
+                                ),
+                              ),
+                              if (evolutionChainStatus == FetchStatus.loading)
+                                AnimatedOpacity(
+                                    opacity: evolutionChainStatus ==
+                                            FetchStatus.loading
+                                        ? 1
+                                        : 0,
+                                    duration: AppDurations.arcDuration,
+                                    child: ProgressBar()),
+                              if (evolutionChainStatus == FetchStatus.failed)
+                                SimpleButton(
+                                  text: "Retry",
+                                  onPressed: _fetchEvolutionChain,
+                                ),
+                              if (evolutionChain != null)
+                                evolutionChain.chain.evolvesTo.length > 0
+                                    ? ChainView(
+                                        main: widget.poke.name.toLowerCase(),
+                                        chain: evolutionChain.chain,
+                                        pokeClick: (poke) =>
+                                            _fetchPokemon(poke))
+                                    : Text(
+                                        "No evolution chain found for " +
+                                            formatUnderscore(widget.poke.name) +
+                                            " :(",
+                                        style: AppStyles.textStyle)
+                            ],
+                          ),
+                        )))),
             minHeight: 0,
             defaultPanelState: PanelState.CLOSED,
             body: Stack(
@@ -255,62 +315,10 @@ class _DetailPageState extends State<DetailPage>
                                         padding: EdgeInsets.symmetric(
                                             vertical: AppDimens.tinyPadding,
                                             horizontal: AppDimens.smallPadding),
-                                        child: ListCard(
-                                            title: "Evolution",
-                                            children: <Widget>[
-                                              EvolutionView(
-                                                evolvesFrom:
-                                                    species.evolvesFrom,
-                                                onPressed: () => _fetchPokemon(
-                                                    species.evolvesFrom.name),
-                                              ),
-                                              if (evolutionChainStatus ==
-                                                  FetchStatus.loading)
-                                                AnimatedOpacity(
-                                                    opacity:
-                                                        evolutionChainStatus ==
-                                                                FetchStatus
-                                                                    .loading
-                                                            ? 1
-                                                            : 0,
-                                                    duration: AppDurations
-                                                        .arcDuration,
-                                                    child: ProgressBar()),
-                                              if (evolutionChainStatus ==
-                                                  FetchStatus.failed)
-                                                SimpleButton(
-                                                  text: "Retry",
-                                                  onPressed:
-                                                      _fetchEvolutionChain,
-                                                ),
-                                              AnimatedSize(
-                                                vsync: this,
-                                                duration:
-                                                    AppDurations.fadeDuration,
-                                                curve: Curves.fastOutSlowIn,
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    AnimatedOpacity(
-                                                        opacity:
-                                                            evolutionChain !=
-                                                                    null
-                                                                ? 1
-                                                                : 0,
-                                                        duration: AppDurations
-                                                            .fadeDuration,
-                                                        child: evolutionChain !=
-                                                                null
-                                                            ? SimpleButton(
-                                                                text:
-                                                                    "View Chain",
-                                                                onPressed:
-                                                                    _showEvolutionChain,
-                                                              )
-                                                            : null)
-                                                  ],
-                                                ),
-                                              )
-                                            ])),
+                                        child: SimpleButton(
+                                          text: "View Evolution Chain",
+                                          onPressed: _showEvolutionChain,
+                                        )),
                                   ],
                                 )
                               : null,

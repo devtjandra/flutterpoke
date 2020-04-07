@@ -51,6 +51,8 @@ class AppStyles {
       color: AppColors.dark, fontSize: 10, fontWeight: FontWeight.bold);
   static const titleTextStyle = TextStyle(
       color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 16);
+  static const descriptionTextStyle =
+      TextStyle(fontSize: 12, color: AppColors.grey);
 
   static const gradientDecor = BoxDecoration(
       gradient: LinearGradient(

@@ -51,46 +51,48 @@ class _AbilityViewState extends State<AbilityView>
     return Padding(
         padding: EdgeInsets.only(
             top: AppDimens.tinyPadding, bottom: AppDimens.normalPadding),
-        child: Column(children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(formatUnderscore(widget.ability.ability.name),
-                  style: AppStyles.textStyle),
-              if (widget.ability.isHidden)
-                Text("Hidden",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.primary,
-                        fontStyle: FontStyle.italic))
-            ],
-          ),
-          AnimatedOpacity(
-              opacity: status == FetchStatus.loading ? 1 : 0,
-              duration: AppDurations.arcDuration,
-              child: ProgressBar()),
-          if (status == FetchStatus.failed)
-            SimpleButton(
-              text: "Retry",
-              onPressed: _fetch,
-            ),
-          AnimatedSize(
-            vsync: this,
-            duration: AppDurations.fadeDuration,
-            curve: Curves.fastOutSlowIn,
-            child: Column(
-              children: <Widget>[
-                AnimatedOpacity(
-                    opacity: detail != null ? 1 : 0,
-                    duration: AppDurations.fadeDuration,
-                    child: detail != null && detail.effectEntries.length > 0
-                        ? Text(detail.effectEntries[0].shortEffect,
-                            style:
-                                TextStyle(fontSize: 12, color: AppColors.grey))
-                        : null)
-              ],
-            ),
-          )
-        ]));
+        child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(formatUnderscore(widget.ability.ability.name),
+                      style: AppStyles.textStyle),
+                  if (widget.ability.isHidden)
+                    Text("Hidden",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.primary,
+                            fontStyle: FontStyle.italic))
+                ],
+              ),
+              AnimatedOpacity(
+                  opacity: status == FetchStatus.loading ? 1 : 0,
+                  duration: AppDurations.arcDuration,
+                  child: ProgressBar()),
+              if (status == FetchStatus.failed)
+                SimpleButton(
+                  text: "Retry",
+                  onPressed: _fetch,
+                ),
+              AnimatedSize(
+                vsync: this,
+                duration: AppDurations.fadeDuration,
+                curve: Curves.fastOutSlowIn,
+                child: Column(
+                  children: <Widget>[
+                    AnimatedOpacity(
+                        opacity: detail != null ? 1 : 0,
+                        duration: AppDurations.fadeDuration,
+                        child: detail != null && detail.effectEntries.length > 0
+                            ? Text(detail.effectEntries[0].shortEffect,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.descriptionTextStyle)
+                            : null)
+                  ],
+                ),
+              )
+            ])));
   }
 }

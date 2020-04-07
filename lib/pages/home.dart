@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterpoke/models.dart';
+import 'package:flutterpoke/pages/extra.dart';
 import 'package:flutterpoke/utils/routes.dart';
 
 import 'package:flutterpoke/utils/requesters.dart';
@@ -45,9 +46,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _goToExtra() {
+    Navigator.push(
+        context, FadeRoute(exitPage: widget, enterPage: ExtraPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Scaffold(
+        body: Stack(
       children: <Widget>[
         Container(
           decoration: AppStyles.gradientDecor,
@@ -94,7 +101,16 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: InkWell(
+                onTap: _goToExtra,
+                child: Padding(
+                    padding: EdgeInsets.all(AppDimens.screenPadding),
+                    child: Text("App Info",
+                        style: TextStyle(
+                            fontSize: 14.0, color: AppColors.white)))))
       ],
-    );
+    ));
   }
 }
